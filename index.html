@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Agent ROI Calculator</title>
+
+  <!-- Poppins Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script> tailwind.config = { theme: { extend: { colors: { primary: '#0066ff', secondary: '#9a67fb' } } } } </script>
+
+  <style>
+    :root {
+      --mist: #f5f5f5;
+      --primary: #0066ff;
+      /* Neutrinos Primary Blue */
+      --midnight: #00053d;
+      --celeste: #00deef;
+      --mint: #00efad;
+      --salmon: #fb327e;
+      --iris: #9a67fb;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    /* enforce site background to Mist Gray */
+    body.bg-gray-100 {
+      background: var(--mist) !important;
+    }
+
+    /* utility mappings for palette colors */
+    .bg-primary {
+      background: var(--primary) !important;
+    }
+
+    .bg-mint {
+      background: var(--mint) !important;
+    }
+
+    .bg-iris {
+      background: var(--iris) !important;
+    }
+
+    .bg-celeste {
+      background: var(--celeste) !important;
+    }
+
+    .bg-midnight {
+      background: var(--midnight) !important;
+    }
+
+    .text-primary {
+      color: var(--primary) !important;
+    }
+
+    .text-mint {
+      color: var(--mint) !important;
+    }
+
+    input[type="range"] {
+      height: 6px;
+      border-radius: 6px;
+    }
+
+    .tab-btn {
+      transition: all .2s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--mint);
+      color: white;
+      font-weight: 600;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* HubSpot form basic styling inside the card */
+    #hubspotForm,
+    #hubspotForm .hs-form {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    #hubspotForm input,
+    #hubspotForm textarea,
+    #hubspotForm select {
+      width: 100% !important;
+      padding: 0.6rem 0.75rem !important;
+      border-radius: 0.5rem !important;
+      border: 1px solid #e5e7eb !important;
+      box-sizing: border-box !important;
+      margin-bottom: 0.75rem !important;
+      font-size: 0.95rem !important;
+      background: #fff !important;
+      color: #111827 !important;
+    }
+
+    #hubspotForm label {
+      display: block !important;
+      margin-bottom: 0.25rem !important;
+      font-weight: 600 !important;
+      color: #374151 !important;
+      font-size: 0.85rem !important;
+    }
+
+    /* Submit button */
+    #hubspotForm input[type="submit"],
+    #hubspotForm button[type="submit"] {
+      background: var(--primary) !important;
+      /* primary */
+      color: white !important;
+      padding: 0.65rem 1rem !important;
+      border-radius: 0.5rem !important;
+      border: none !important;
+      cursor: pointer !important;
+      font-weight: 600 !important;
+      width: 100% !important;
+      box-shadow: 0 6px 18px rgba(0, 102, 255, 0.12) !important;
+    }
+
+    #hubspotForm input[type="submit"]:hover,
+    #hubspotForm button[type="submit"]:hover {
+      opacity: 0.95 !important;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100">
+
+
+
+
+  <!-- ================= HEADER ================= -->
+  <header class="bg-white sticky top-0 z-50 border-b">
+
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+
+      <!-- Logo (non-clickable) -->
+      <div class="flex items-center gap-3">
+        <div aria-current="page" class="header__logo-link active" data-faitracker-click-bind="true" role="img">
+          <svg xmlns="http://www.w3.org/2000/svg" width="164" height="28" viewBox="0 0 164 28" fill="none"
+            class="header__logo" aria-label="Neutrinos logo">
+            <path
+              d="M61.3805 4.59033H64.1168V23.3488H61.7226L50.9327 9.2723V23.3488H48.1964V4.59033H50.5907L50.6529 4.65153L61.3805 18.6668V4.59033ZM78.3892 11.9652C79.5708 13.1586 80.2238 14.8111 80.2238 16.6166C80.2238 17.045 80.1616 17.4428 80.1616 17.657V17.8406H69.9626C70.1181 18.7586 70.5845 19.5849 71.2997 20.1969C72.0771 20.8701 73.1032 21.2679 74.1604 21.2679C75.5285 21.2679 76.7412 20.7171 77.8295 19.5849L77.9539 19.4625L79.6641 21.0231L79.5708 21.1455C79.1977 21.6045 78.5447 22.3084 77.5186 22.8286C76.4925 23.3794 75.342 23.6548 74.0982 23.6548C72.2947 23.6548 70.6156 22.951 69.3407 21.6963C68.0658 20.4417 67.3818 18.728 67.3818 16.892C67.3818 15.0559 68.0658 13.3422 69.3407 12.0876C70.5845 10.833 72.2325 10.1597 73.9738 10.1597C75.7151 10.1597 77.3009 10.8024 78.4825 11.9958L78.3892 11.9652ZM69.9004 15.7291H77.5808C77.3942 14.7805 76.99 13.9543 76.3681 13.4034C75.7151 12.7914 74.8445 12.4548 73.8494 12.4548C71.8905 12.4548 70.3047 13.7707 69.8693 15.7597L69.9004 15.7291ZM92.2263 17.4734C92.2263 18.5444 91.8532 19.4931 91.1691 20.1969C90.5161 20.8701 89.5833 21.2373 88.5883 21.2373C87.6865 21.2373 86.9092 20.9313 86.3495 20.3499C85.7898 19.7685 85.4788 18.9422 85.4788 17.963V10.3739H82.9602V17.963C82.9602 21.2985 85.1368 23.5936 88.2773 23.5936C90.0186 23.5936 91.4801 22.6756 92.2574 21.7269V23.3488H94.745V10.4045H92.2574V17.504L92.2263 17.4734ZM101.555 20.2887C101.088 19.7991 100.871 19.0034 100.871 17.7794V12.7302H103.514V10.3739H100.871V6.15099L98.3831 7.00782V17.81C98.3831 19.5543 98.7251 20.8701 99.3781 21.7881C100.155 22.8286 101.368 23.3794 103.016 23.3794H103.918V20.8395H103.016C102.363 20.8395 101.866 20.6559 101.524 20.3193L101.555 20.2887ZM109.639 11.9652V10.4045H107.121V23.3794H109.639V16.5554C109.639 15.4537 110.012 14.4745 110.728 13.7401C111.412 13.0362 112.313 12.6384 113.308 12.6384C113.557 12.6384 113.837 12.669 114.055 12.6996C114.086 12.6996 114.148 12.6996 114.179 12.6996H114.366V10.1291H113.588C111.692 10.1291 110.323 11.139 109.639 11.9346V11.9652ZM116.947 8.75208H119.465V6.21219H116.947V8.75208ZM116.947 23.3794H119.465V10.4045H116.947V23.3794ZM129.944 10.1291C128.016 10.1291 126.648 11.1696 125.964 11.9958V10.3739H123.445V23.3488H125.964V16.2493C125.964 15.1783 126.337 14.2297 126.99 13.5259C127.643 12.8526 128.576 12.4854 129.571 12.4854C130.473 12.4854 131.281 12.7914 131.841 13.3728C132.432 13.9543 132.743 14.7805 132.743 15.7597V23.3488H135.23V15.7597C135.23 14.1073 134.702 12.6996 133.738 11.6592C132.774 10.6493 131.437 10.0985 129.944 10.0985V10.1291ZM149.627 12.0876C150.902 13.3422 151.617 15.0559 151.617 16.892C151.617 18.728 150.902 20.4111 149.627 21.6963C148.352 22.951 146.642 23.6548 144.838 23.6548C143.035 23.6548 141.325 22.951 140.05 21.6963C138.775 20.4417 138.06 18.728 138.06 16.892C138.06 15.0559 138.775 13.3728 140.05 12.0876C141.325 10.833 143.035 10.1291 144.838 10.1291C146.642 10.1291 148.352 10.833 149.627 12.0876ZM147.855 13.7707C147.077 12.975 145.989 12.516 144.838 12.516C143.688 12.516 142.6 12.9444 141.822 13.7707C141.014 14.5969 140.578 15.6985 140.578 16.892C140.578 18.0854 141.014 19.1871 141.822 20.0133C142.6 20.8089 143.688 21.2679 144.838 21.2679C145.989 21.2679 147.077 20.8395 147.855 20.0133C148.663 19.1871 149.098 18.0854 149.098 16.892C149.098 15.6985 148.663 14.5969 147.855 13.7707ZM159.235 15.5761C157.836 15.1783 156.654 14.8111 156.654 13.9237C156.654 13.2198 157.338 12.4548 158.831 12.4548C160.323 12.4548 161.256 13.2504 161.629 13.5871L161.754 13.6789L163.433 12.057L163.309 11.9346C162.78 11.3838 161.256 10.1291 158.831 10.1291C157.463 10.1291 156.281 10.5269 155.411 11.2614C154.602 11.9652 154.136 12.8832 154.136 13.8931C154.136 16.4942 156.561 17.2286 158.489 17.81C159.919 18.2384 161.132 18.6056 161.132 19.5543C161.132 20.0439 160.914 20.4723 160.51 20.7783C160.075 21.1149 159.422 21.2985 158.644 21.2985C157.245 21.2985 155.939 20.4111 155.286 19.6461L155.162 19.5237L153.483 21.1455L153.576 21.2679C154.042 21.8493 154.726 22.4308 155.504 22.8286C156.468 23.3488 157.556 23.6242 158.644 23.6242C160.106 23.6242 161.35 23.1958 162.282 22.4308C163.153 21.6963 163.619 20.6559 163.619 19.5543C163.619 16.8614 161.163 16.1269 159.204 15.5455L159.235 15.5761Z"
+              fill="black"></path>
+            <path
+              d="M32.8359 0.0306011L22.2637 8.3541L11.1319 0.0306011H8.42663V27.9388H11.0697L21.6418 19.6153L32.7426 27.9388H35.4478V0.0306011H32.8048H32.8359ZM32.7115 24.4503L13.3396 9.94536V13.3727L19.4341 17.9322L11.2562 24.3585V3.51913L30.6593 18.024V14.5967L24.5647 10.0372L32.7426 3.61093V24.4503H32.7115ZM43.9366 24.5727V28L37.5933 23.2568V19.8295L43.9677 24.5727H43.9366ZM0 3.42732V0L6.34329 4.74317V8.17049L0 3.42732Z"
+              fill="#0066FF"></path>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Nav -->
+      <nav class="hidden md:flex gap-8 text-gray-600 text-sm font-medium">
+        <a href="#hero" class="text-primary font-semibold">Home</a>
+        <a href="#library">AI Library</a>
+        <a href="#impact">Impact</a>
+        <a href="#calculators">Calculators</a>
+        <a href="#demo">Demo</a>
+      </nav>
+
+      <!-- CTA -->
+      <a href="#demo"
+        class="bg-primary text-white px-5 py-2.5 rounded-lg text-sm font-semibold shadow-md hover:opacity-90">
+        Book a Demo
+      </a>
+
+    </div>
+  </header>
+
+
+
+  <!-- ================= HERO ================= -->
+  <section id="hero" class="bg-gradient-to-b from-white to-gray-50">
+
+    <div class="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-16 items-start">
+
+      <!-- LEFT -->
+      <div>
+
+        <h1 class="text-5xl md:text-6xl font-bold leading-tight">
+          Power Insurance AI<br>
+          with Pre-Built<br>
+          <span class="text-primary">Autonomous Agents</span>
+        </h1>
+
+        <p class="mt-6 text-lg text-gray-600 max-w-lg">
+          Autonomous AI Agents built to solve insurance challenges across claims,
+          underwriting, servicing, fraud, and more. Deploy enterprise-ready
+          intelligence in minutes, not months.
+        </p>
+
+        <div class="mt-8 flex gap-4">
+          <a href="#calculators" class="bg-primary text-white px-6 py-3 rounded-lg font-medium shadow-md">
+            Try Our AI Calculators
+          </a>
+
+          <a href="#demo" class="border border-gray-300 px-6 py-3 rounded-lg font-medium">
+            Book a Demo
+          </a>
+        </div>
+
+      </div>
+
+
+      <!-- RIGHT -->
+      <div>
+
+        <!-- Video Card -->
+        <div class="bg-white p-3 rounded-2xl shadow-2xl">
+
+          <video class="w-full aspect-video rounded-xl shadow-2xl" controls preload="metadata">
+            <source src="Neutrinos_Intelligent_Automation_Platform_144P.mp4" type="video/mp4">
+          </video>
+
+
+        </div>
+
+        <!-- TRUSTED LOGOS -->
+        <div class="mt-12">
+
+          <p class="text-xs text-center tracking-widest text-gray-400 mb-6">
+            TRUSTED BY INDUSTRY LEADERS
+          </p>
+
+          <div class="grid grid-cols-3 gap-8 items-center opacity-90">
+
+            <!-- CDN / Partner icons using lucide (colored mint) -->
+            <div class="flex flex-col items-center">
+              <i data-lucide="sun" class="w-10 h-10 text-mint"></i>
+              <p class="text-xs mt-2 text-mint font-semibold">Sun Life</p>
+            </div>
+
+            <div class="flex flex-col items-center">
+              <i data-lucide="shield-check" class="w-10 h-10 text-mint"></i>
+              <p class="text-xs mt-2 text-mint font-semibold">Manulife</p>
+            </div>
+
+            <div class="flex flex-col items-center">
+              <i data-lucide="clipboard-check" class="w-10 h-10 text-mint"></i>
+              <p class="text-xs mt-2 text-mint font-semibold">Prudential</p>
+            </div>
+
+            <div class="flex flex-col items-center">
+              <i data-lucide="bus" class="w-10 h-10 text-mint"></i>
+              <p class="text-xs mt-2 text-mint font-semibold">Al Rajhi</p>
+            </div>
+
+            <div class="flex flex-col items-center">
+              <i data-lucide="users" class="w-10 h-10 text-mint"></i>
+              <p class="text-xs mt-2 text-mint font-semibold">Sanlam</p>
+            </div>
+
+            <div class="flex flex-col items-center">
+              <i data-lucide="cloud" class="w-10 h-10 text-mint"></i>
+              <p class="text-xs mt-2 text-mint font-semibold">InsurTech</p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ================= HERO END ================= -->
+
+  <!-- ================= AGENT LIBRARY ================= -->
+  <section id="library" class="bg-white py-8">
+
+    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-20 items-start">
+
+
+      <!-- LEFT CONTENT -->
+      <div>
+
+        <p class="text-xs tracking-widest text-primary font-semibold mb-4">
+          COMPREHENSIVE COVERAGE
+        </p>
+
+        <h2 class="text-4xl font-bold leading-tight">
+          A Look Inside the<br>
+          <span class="text-primary">AI Agent Library</span>
+        </h2>
+
+        <p class="mt-6 text-gray-600 max-w-lg">
+          Our AI Agent Library spans six broad categories, each with a growing list of specialized
+          agents that is constantly expanding to cover more insurance workflows and use cases.
+          From initial risk assessment to final claims settlement, our agents work autonomously to drive efficiency.
+        </p>
+
+        <button class="mt-8 bg-primary text-white px-6 py-3 rounded-lg font-medium shadow-md">
+          Explore All Categories →
+        </button>
+
+      </div>
+
+
+
+      <!-- RIGHT GRID -->
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-12 text-center">
+
+
+        <!-- 1 -->
+        <div>
+          <i data-lucide="search" class="mx-auto w-14 h-14 text-primary mb-4"></i>
+          <h4 class="font-semibold text-mint">Underwriting & Risk Assessment</h4>
+          <p class="text-sm text-gray-500 mt-2">Automate risk evaluation and pricing with precision analysis.</p>
+        </div>
+
+
+        <!-- 2 -->
+        <div>
+          <i data-lucide="shield-check" class="mx-auto w-14 h-14 text-primary mb-4"></i>
+          <h4 class="font-semibold text-mint">Fraud Detection & Adjudication</h4>
+          <p class="text-sm text-gray-500 mt-2">Identify anomalies in real-time to prevent fraud.</p>
+        </div>
+
+
+        <!-- 3 -->
+        <div>
+          <i data-lucide="clipboard-check" class="mx-auto w-14 h-14 text-primary mb-4"></i>
+          <h4 class="font-semibold text-mint">Claims Automation</h4>
+          <p class="text-sm text-gray-500 mt-2">End-to-end claims processing with minimal touch.</p>
+        </div>
+
+
+        <!-- 4 -->
+        <div>
+          <i data-lucide="file-text" class="mx-auto w-14 h-14 text-primary mb-4"></i>
+          <h4 class="font-semibold text-mint">Medical & Document Intelligence</h4>
+          <p class="text-sm text-gray-500 mt-2">Extract insights from reports and complex documents.</p>
+        </div>
+
+
+        <!-- 5 -->
+        <div>
+          <i data-lucide="users" class="mx-auto w-14 h-14 text-primary mb-4"></i>
+          <h4 class="font-semibold text-mint">Customer Communication</h4>
+          <p class="text-sm text-gray-500 mt-2">Personalized omni-channel engagement.</p>
+        </div>
+
+
+        <!-- 6 -->
+        <div>
+          <i data-lucide="cloud-check" class="mx-auto w-14 h-14 text-primary mb-4"></i>
+          <h4 class="font-semibold text-mint">Distribution & Compliance</h4>
+          <p class="text-sm text-gray-500 mt-2">Ensure compliance with enterprise controls.</p>
+        </div>
+
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================= IMPACT SECTION ================= -->
+  <section id="impact" class="bg-gray-50 py-8">
+
+    <div class="max-w-7xl mx-auto px-6">
+
+
+      <!-- TOP HEADER -->
+      <div class="grid md:grid-cols-2 gap-10 items-start mb-6">
+
+        <div>
+          <p class="text-xs tracking-widest text-primary font-semibold mb-4">
+            BUSINESS VALUE
+          </p>
+
+          <h2 class="text-4xl font-bold leading-tight">
+            Proven Impact Across the<br>
+            <span class="text-primary">Insurance Value Chain</span>
+          </h2>
+        </div>
+
+        <div class="self-start md:mt-[2.3rem]">
+          <p class="text-gray-600 max-w-md">
+            Deploying Neutrinos AI Agents doesn’t just automate tasks—it transforms
+            operations. See how our library drives efficiency, compliance, and growth.
+          </p>
+        </div>
+
+      </div>
+
+
+
+      <!-- STATS CARDS -->
+      <div class="grid md:grid-cols-4 gap-6 mb-6">
+
+        <div class="bg-white rounded-xl shadow-sm border p-6">
+          <h3 class="text-4xl font-bold text-primary">50%</h3>
+          <p class="font-semibold mt-2">Efficiency Gains</p>
+          <p class="text-sm text-gray-500 mt-1">Reduction in manual processing time</p>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border p-6">
+          <h3 class="text-4xl font-bold text-primary">3x</h3>
+          <p class="font-semibold mt-2">Faster Cycle Times</p>
+          <p class="text-sm text-gray-500 mt-1">Accelerated submission to issuance</p>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border p-6">
+          <h3 class="text-4xl font-bold text-primary">99%</h3>
+          <p class="font-semibold mt-2">Accuracy Rate</p>
+          <p class="text-sm text-gray-500 mt-1">Complex data extraction & entry tasks</p>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border p-6">
+          <h3 class="text-4xl font-bold text-primary">100%</h3>
+          <p class="font-semibold mt-2">Compliance</p>
+          <p class="text-sm text-gray-500 mt-1">Full audit trails for every action</p>
+        </div>
+
+      </div>
+
+
+
+      <!-- FEATURE CARDS -->
+      <div class="grid md:grid-cols-3 gap-8">
+
+
+        <!-- CARD 1 -->
+        <div class="bg-white rounded-2xl shadow-md p-4">
+
+          <i data-lucide="trending-up" class="w-10 h-10 text-primary mb-4"></i>
+
+          <h4 class="font-semibold text-lg mb-2">Predictive Analytics</h4>
+
+          <p class="text-gray-600 mb-4 text-sm">
+            Harness real-time data to anticipate risks and opportunities before they happen.
+          </p>
+
+          <ul class="space-y-2 text-sm text-gray-600">
+            <li>✔ Dynamic pricing models</li>
+            <li>✔ Real-time fraud detection</li>
+            <li>✔ Churn prediction & retention</li>
+          </ul>
+
+        </div>
+
+
+
+        <!-- CARD 2 -->
+        <div class="bg-white rounded-2xl shadow-md p-8">
+
+          <i data-lucide="scale" class="w-10 h-10 text-primary mb-4"></i>
+
+          <h4 class="font-semibold text-lg mb-2">Scale & Governance</h4>
+
+          <p class="text-gray-600 mb-4 text-sm">
+            Expand automation securely across the enterprise with strong governance.
+          </p>
+
+          <ul class="space-y-2 text-sm text-gray-600">
+            <li>✔ Enterprise-grade security</li>
+            <li>✔ Centralized agent management</li>
+            <li>✔ SOC2 & GDPR compliance</li>
+          </ul>
+
+        </div>
+
+
+
+        <!-- CARD 3 -->
+        <div class="bg-white rounded-2xl shadow-md p-8">
+
+          <i data-lucide="pencil-ruler" class="w-10 h-10 text-primary mb-4"></i>
+
+          <h4 class="font-semibold text-lg mb-2">Discover & Design</h4>
+
+          <p class="text-gray-600 mb-4 text-sm">
+            Tailor AI agents to your workflows with low-code tools and rapid iteration.
+          </p>
+
+          <ul class="space-y-2 text-sm text-gray-600">
+            <li>✔ Business-specific templates</li>
+            <li>✔ Rapid prototyping</li>
+            <li>✔ Custom integrations</li>
+          </ul>
+
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+  </section>
+
+
+
+
+
+
+  <!--Calculator-->
+  <!-- ================= CALCULATOR ================= -->
+  <section id="calculators" class="py-8">
+
+    <div class="max-w-7xl mx-auto px-6">
+
+      <div class="bg-white rounded-2xl shadow-xl p-6">
+
+        <h2 class="text-2xl font-semibold text-center mb-2">
+          AI Agent ROI Calculator
+        </h2>
+        <p class="text-center text-gray-500 mb-6">
+          See the impact of AI automation on your insurance operations
+        </p>
+
+
+        <!-- TABS -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+
+          <button class="tab-btn border rounded-lg py-4 bg-gray-50 whitespace-normal break-words text-sm px-3" data-type="nigo">
+            Claims NIGO Handler
+          </button>
+
+          <button class="tab-btn border rounded-lg py-4 bg-gray-50 whitespace-normal break-words text-sm px-3" data-type="eligibility">
+            Claims Eligibility Agent
+          </button>
+
+          <button class="tab-btn border rounded-lg py-4 bg-gray-50 whitespace-normal break-words text-sm px-3" data-type="policy">
+            Policy Recommendation Agent
+          </button>
+
+          <button class="tab-btn border rounded-lg py-4 bg-gray-50 whitespace-normal break-words text-sm px-3" data-type="email">
+            Email Automation Agent
+          </button>
+
+        </div>
+
+
+
+        <!-- CARD -->
+        <div class="rounded-xl overflow-hidden border">
+
+          <!-- HEADER -->
+          <div id="calc-header" class="text-white px-6 py-4">
+            <h3 id="calc-title" class="font-semibold text-lg"></h3>
+          </div>
+
+
+          <!-- BODY -->
+          <div class="p-6 space-y-8">
+
+
+            <!-- INPUT A -->
+            <div>
+              <div class="flex justify-between mb-2">
+                <label id="labelA" class="font-medium"></label>
+                <span id="valueA" class="px-3 py-1 text-white rounded-md text-sm font-semibold"></span>
+              </div>
+              <input id="inputA" type="range" min="0" max="10000" step="10" class="w-full">
+            </div>
+
+
+            <!-- INPUT B -->
+            <div>
+              <div class="flex justify-between mb-2">
+                <label id="labelB" class="font-medium"></label>
+                <span id="valueB" class="px-3 py-1 text-white rounded-md text-sm font-semibold"></span>
+              </div>
+              <input id="inputB" type="range" min="0" max="100" step="1" class="w-full">
+            </div>
+
+
+            <!-- INPUT C (EMAIL ONLY) -->
+            <div id="inputCWrapper" class="hidden">
+              <div class="flex justify-between mb-2">
+                <label id="labelC" class="font-medium"></label>
+                <span id="valueC" class="px-3 py-1 text-white rounded-md text-sm font-semibold"></span>
+              </div>
+              <input id="inputC" type="range" min="0" max="30" step="1" class="w-full">
+            </div>
+
+
+            <!-- RESULT: up to three separate cards (responsive) -->
+            <div id="results-grid" class="grid md:grid-cols-3 gap-6">
+              <!-- Swapped order: place secondary first, then primary, then tertiary -->
+              <div id="result-box-secondary" class="hidden text-white rounded-xl py-8 text-center">
+                <div id="result-secondary-value" class="text-3xl font-semibold result-value"></div>
+                <p id="result-secondary-label" class="text-sm opacity-90 mt-2">Secondary Estimated Impact</p>
+              </div>
+
+              <div id="result-box-primary" class="text-white rounded-xl py-8 text-center">
+                <div id="result" class="text-3xl font-bold result-value"></div>
+                <p id="result-primary-label" class="text-sm opacity-90 mt-2">Primary Estimated Impact</p>
+              </div>
+
+              <div id="result-box-tertiary" class="hidden text-white rounded-xl py-8 text-center">
+                <div id="result-tertiary-value" class="text-3xl font-semibold result-value"></div>
+                <p id="result-tertiary-label" class="text-sm opacity-90 mt-2">Tertiary Estimated Impact</p>
+              </div>
+              <div id="result-box-flagged" class="hidden text-white rounded-xl py-8 text-center">
+                <div id="result-flagged-value" class="text-3xl font-semibold result-value"></div>
+                <p id="result-flagged-label" class="text-sm opacity-90 mt-2">Flagged for Priority/Fraud Review</p>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!--Calculator end-->
+
+  <!-- ================= DEMO / CTA SECTION ================= -->
+  <section id="demo" class="bg-white py-10">
+
+    <div class="max-w-7xl mx-auto grid md:grid-cols-2">
+
+
+      <!-- LEFT SIDE -->
+      <div class="px-8 py-16 flex flex-col justify-center">
+
+        <h2 class="text-5xl font-bold leading-tight">
+          Ready to <span class="text-primary">Transform?</span><br>
+          Book Your Demo
+        </h2>
+
+        <p class="mt-6 text-gray-600 max-w-md">
+          Join leading insurers automating operations with Agentic AI.
+          Get a personalized roadmap and full library access today.
+        </p>
+
+
+        <!-- BENEFITS -->
+        <div class="mt-10 space-y-6">
+
+          <div class="flex items-start gap-4">
+            <i data-lucide="route" class="text-primary w-6 h-6 mt-1"></i>
+            <div>
+              <p class="font-semibold">Personalized Agent Roadmap</p>
+              <p class="text-sm text-gray-500">Tailored implementation plan for your business</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4">
+            <i data-lucide="library" class="text-primary w-6 h-6 mt-1"></i>
+            <div>
+              <p class="font-semibold">Full Library Access</p>
+              <p class="text-sm text-gray-500">Explore all pre-built agents instantly</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4">
+            <i data-lucide="user-check" class="text-primary w-6 h-6 mt-1"></i>
+            <div>
+              <p class="font-semibold">Expert Implementation Guidance</p>
+              <p class="text-sm text-gray-500">Work directly with our solution architects</p>
+            </div>
+          </div>
+
+        </div>
+
+
+        <!-- DOWNLOAD LINK -->
+        <div class="mt-10 text-sm text-gray-500">
+          Not ready to commit? Start here:
+          <br>
+          <a href="#" class="text-primary font-semibold">
+            Download the AI Agent Library Brochure →
+          </a>
+        </div>
+
+      </div>
+
+
+
+      <!-- RIGHT SIDE (PURPLE BG + FORM) -->
+      <div class="bg-primary rounded-2xl flex items-center justify-center p-10">
+
+        <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
+
+          <h3 class="text-xl font-semibold mb-2">Schedule Your Pilot</h3>
+          <p class="text-sm text-gray-500 mb-6">
+            Fill out the form below to secure your consultation slot
+          </p>
+
+          <div id="hubspotForm"></div>
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+
+
+
+  <script src="script.js"></script>
+  <script>lucide.createIcons();</script>
+
+  <script charset="utf-8" src="https://js-na2.hsforms.net/forms/embed/v2.js"></script>
+
+  <script>
+    hbspt.forms.create({
+      portalId: "46160562",
+      formId: "4f2ed0fa-3609-43fb-a27b-4020ecbe8590",
+      region: "na2",
+      target: "#hubspotForm"
+    });
+  </script>
+</body>
+
+</html>
