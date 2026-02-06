@@ -83,6 +83,19 @@
 
     html {
       scroll-behavior: smooth;
+      /* ensure anchored sections are visible below sticky header */
+      scroll-padding-top: 2.5rem;
+    }
+
+    /* When jumping to an element by id, offset its position so it's not hidden
+       under the sticky header. Adjust value if your header height changes. */
+    section[id] {
+      scroll-margin-top: 2.5rem;
+    }
+
+    #library .grid h4 {
+      font-size: 0.9rem !important;
+      min-height: 3rem;
     }
 
     /* HubSpot form basic styling inside the card */
@@ -132,6 +145,98 @@
     #hubspotForm button[type="submit"]:hover {
       opacity: 0.95 !important;
     }
+
+
+
+/* Hamburger bars */
+.bar {
+  width: 24px;
+  height: 2px;
+  background: var(--midnight);
+  transition: 0.3s;
+}
+
+/* Drawer open */
+.menu-open {
+  left: 0 !important;
+}
+
+.overlay-open {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* mobile links */
+.mobile-link {
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+.mobile-link:hover {
+  color: var(--primary);
+}
+
+ .text-5xl {
+        font-size: 2.25rem !important;
+      }
+
+
+
+    /* Tablet-specific adjustments for large headings */
+    @media (min-width: 768px) and (max-width: 1024px) {
+
+      /* Hero H1 */
+      #hero h1 {
+        font-size: 2.5rem !important;
+        line-height: 1.05 !important;
+      }
+
+      /* Section H2s */
+      #library h2,
+      #impact h2,
+      #hero h2,
+      h2 {
+        font-size: 1.75rem !important;
+        line-height: 1.1 !important;
+      }
+
+      /* Utility class fallbacks for large text utilities */
+      .text-6xl {
+        font-size: 2.5rem !important;
+      }
+
+      .text-5xl {
+        font-size: 2.25rem !important;
+      }
+
+      .text-4xl {
+        font-size: 1.75rem !important;
+      }
+
+      /* Library icons and small headings: reduce slightly for tablet */
+      #library .grid i[data-lucide] {
+        width: 3rem !important;
+        height: 3rem !important;
+      }
+
+      #library .grid h4 {
+        font-size: 0.8rem !important;
+        margin-top: 0.25rem !important;
+      }
+
+      .delivered {
+        font-size: small;
+      }
+
+      .ai-agent {
+        margin-top: 3rem !important;
+      }
+    }
+    @media(max-width:768px){
+       .ai-agent {
+        margin-top: 1rem !important;
+        transform: scale(1.08);
+      }
+    }
   </style>
 </head>
 
@@ -141,14 +246,17 @@
 
 
   <!-- ================= HEADER ================= -->
-  <header class="bg-white sticky top-0 z-50 border-b">
+<header class="bg-white sticky top-0 z-50 border-b relative">
 
-    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
-      <!-- Logo (non-clickable) -->
-      <div class="flex items-center gap-3">
-        <div aria-current="page" class="header__logo-link active" data-faitracker-click-bind="true" role="img">
-          <svg xmlns="http://www.w3.org/2000/svg" width="164" height="28" viewBox="0 0 164 28" fill="none"
+    <!-- Logo -->
+    <div class="flex items-center gap-3">
+      <!-- your same svg kept -->
+
+            <a href="https://www.neutrinos.com/" target="_blank" rel="noopener noreferrer" class="header__logo-link active" data-faitracker-click-bind="true" aria-label="Neutrinos logo">
+
+         <svg xmlns="http://www.w3.org/2000/svg" width="164" height="28" viewBox="0 0 164 28" fill="none"
             class="header__logo" aria-label="Neutrinos logo">
             <path
               d="M61.3805 4.59033H64.1168V23.3488H61.7226L50.9327 9.2723V23.3488H48.1964V4.59033H50.5907L50.6529 4.65153L61.3805 18.6668V4.59033ZM78.3892 11.9652C79.5708 13.1586 80.2238 14.8111 80.2238 16.6166C80.2238 17.045 80.1616 17.4428 80.1616 17.657V17.8406H69.9626C70.1181 18.7586 70.5845 19.5849 71.2997 20.1969C72.0771 20.8701 73.1032 21.2679 74.1604 21.2679C75.5285 21.2679 76.7412 20.7171 77.8295 19.5849L77.9539 19.4625L79.6641 21.0231L79.5708 21.1455C79.1977 21.6045 78.5447 22.3084 77.5186 22.8286C76.4925 23.3794 75.342 23.6548 74.0982 23.6548C72.2947 23.6548 70.6156 22.951 69.3407 21.6963C68.0658 20.4417 67.3818 18.728 67.3818 16.892C67.3818 15.0559 68.0658 13.3422 69.3407 12.0876C70.5845 10.833 72.2325 10.1597 73.9738 10.1597C75.7151 10.1597 77.3009 10.8024 78.4825 11.9958L78.3892 11.9652ZM69.9004 15.7291H77.5808C77.3942 14.7805 76.99 13.9543 76.3681 13.4034C75.7151 12.7914 74.8445 12.4548 73.8494 12.4548C71.8905 12.4548 70.3047 13.7707 69.8693 15.7597L69.9004 15.7291ZM92.2263 17.4734C92.2263 18.5444 91.8532 19.4931 91.1691 20.1969C90.5161 20.8701 89.5833 21.2373 88.5883 21.2373C87.6865 21.2373 86.9092 20.9313 86.3495 20.3499C85.7898 19.7685 85.4788 18.9422 85.4788 17.963V10.3739H82.9602V17.963C82.9602 21.2985 85.1368 23.5936 88.2773 23.5936C90.0186 23.5936 91.4801 22.6756 92.2574 21.7269V23.3488H94.745V10.4045H92.2574V17.504L92.2263 17.4734ZM101.555 20.2887C101.088 19.7991 100.871 19.0034 100.871 17.7794V12.7302H103.514V10.3739H100.871V6.15099L98.3831 7.00782V17.81C98.3831 19.5543 98.7251 20.8701 99.3781 21.7881C100.155 22.8286 101.368 23.3794 103.016 23.3794H103.918V20.8395H103.016C102.363 20.8395 101.866 20.6559 101.524 20.3193L101.555 20.2887ZM109.639 11.9652V10.4045H107.121V23.3794H109.639V16.5554C109.639 15.4537 110.012 14.4745 110.728 13.7401C111.412 13.0362 112.313 12.6384 113.308 12.6384C113.557 12.6384 113.837 12.669 114.055 12.6996C114.086 12.6996 114.148 12.6996 114.179 12.6996H114.366V10.1291H113.588C111.692 10.1291 110.323 11.139 109.639 11.9346V11.9652ZM116.947 8.75208H119.465V6.21219H116.947V8.75208ZM116.947 23.3794H119.465V10.4045H116.947V23.3794ZM129.944 10.1291C128.016 10.1291 126.648 11.1696 125.964 11.9958V10.3739H123.445V23.3488H125.964V16.2493C125.964 15.1783 126.337 14.2297 126.99 13.5259C127.643 12.8526 128.576 12.4854 129.571 12.4854C130.473 12.4854 131.281 12.7914 131.841 13.3728C132.432 13.9543 132.743 14.7805 132.743 15.7597V23.3488H135.23V15.7597C135.23 14.1073 134.702 12.6996 133.738 11.6592C132.774 10.6493 131.437 10.0985 129.944 10.0985V10.1291ZM149.627 12.0876C150.902 13.3422 151.617 15.0559 151.617 16.892C151.617 18.728 150.902 20.4111 149.627 21.6963C148.352 22.951 146.642 23.6548 144.838 23.6548C143.035 23.6548 141.325 22.951 140.05 21.6963C138.775 20.4417 138.06 18.728 138.06 16.892C138.06 15.0559 138.775 13.3728 140.05 12.0876C141.325 10.833 143.035 10.1291 144.838 10.1291C146.642 10.1291 148.352 10.833 149.627 12.0876ZM147.855 13.7707C147.077 12.975 145.989 12.516 144.838 12.516C143.688 12.516 142.6 12.9444 141.822 13.7707C141.014 14.5969 140.578 15.6985 140.578 16.892C140.578 18.0854 141.014 19.1871 141.822 20.0133C142.6 20.8089 143.688 21.2679 144.838 21.2679C145.989 21.2679 147.077 20.8395 147.855 20.0133C148.663 19.1871 149.098 18.0854 149.098 16.892C149.098 15.6985 148.663 14.5969 147.855 13.7707ZM159.235 15.5761C157.836 15.1783 156.654 14.8111 156.654 13.9237C156.654 13.2198 157.338 12.4548 158.831 12.4548C160.323 12.4548 161.256 13.2504 161.629 13.5871L161.754 13.6789L163.433 12.057L163.309 11.9346C162.78 11.3838 161.256 10.1291 158.831 10.1291C157.463 10.1291 156.281 10.5269 155.411 11.2614C154.602 11.9652 154.136 12.8832 154.136 13.8931C154.136 16.4942 156.561 17.2286 158.489 17.81C159.919 18.2384 161.132 18.6056 161.132 19.5543C161.132 20.0439 160.914 20.4723 160.51 20.7783C160.075 21.1149 159.422 21.2985 158.644 21.2985C157.245 21.2985 155.939 20.4111 155.286 19.6461L155.162 19.5237L153.483 21.1455L153.576 21.2679C154.042 21.8493 154.726 22.4308 155.504 22.8286C156.468 23.3488 157.556 23.6242 158.644 23.6242C160.106 23.6242 161.35 23.1958 162.282 22.4308C163.153 21.6963 163.619 20.6559 163.619 19.5543C163.619 16.8614 161.163 16.1269 159.204 15.5455L159.235 15.5761Z"
@@ -157,38 +265,75 @@
               d="M32.8359 0.0306011L22.2637 8.3541L11.1319 0.0306011H8.42663V27.9388H11.0697L21.6418 19.6153L32.7426 27.9388H35.4478V0.0306011H32.8048H32.8359ZM32.7115 24.4503L13.3396 9.94536V13.3727L19.4341 17.9322L11.2562 24.3585V3.51913L30.6593 18.024V14.5967L24.5647 10.0372L32.7426 3.61093V24.4503H32.7115ZM43.9366 24.5727V28L37.5933 23.2568V19.8295L43.9677 24.5727H43.9366ZM0 3.42732V0L6.34329 4.74317V8.17049L0 3.42732Z"
               fill="#0066FF"></path>
           </svg>
-        </div>
-      </div>
-
-      <!-- Nav -->
-      <nav class="hidden md:flex gap-8 text-gray-600 text-sm font-medium">
-        <a href="#hero" class="text-primary font-semibold">Home</a>
-        <a href="#library">AI Library</a>
-        <a href="#impact">Impact</a>
-        <a href="#calculators">Calculators</a>
-        <a href="#demo">Demo</a>
-      </nav>
-
-      <!-- CTA -->
-      <a href="#demo"
-        class="bg-primary text-white px-5 py-2.5 rounded-lg text-sm font-semibold shadow-md hover:opacity-90">
-        Book a Demo
-      </a>
-
+   </a>
     </div>
-  </header>
+
+    <!-- Desktop Nav -->
+    <nav class="hidden md:flex gap-6 text-gray-600 text-sm font-medium">
+      <a href="#hero" class="text-primary font-semibold">Home</a>
+      <a href="#library">AI Library</a>
+      <a href="#calculators">Calculators</a>
+      <a href="#impact">Impact</a>
+      <a href="#demo">Demo</a>
+    </nav>
+
+    <!-- Desktop CTA -->
+    <a href="#demo"
+      class=" hidden md:inline-block bg-primary text-white px-5 py-2.5 rounded-lg text-sm font-semibold shadow-md hover:opacity-90">
+      Book a Demo
+    </a>
+
+    <!-- Hamburger Button (mobile only) -->
+    <button id="menuBtn" class="md:hidden flex flex-col gap-1.5">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+
+  </div>
+
+
+  <!-- ===================== -->
+  <!-- MOBILE DRAWER MENU -->
+  <!-- ===================== -->
+
+  <!-- Overlay -->
+  <div id="overlay" class="fixed inset-0 bg-black/40 opacity-0 pointer-events-none transition duration-300"></div>
+
+  <!-- Drawer -->
+  <div id="mobileMenu"
+    class="fixed top-0 left-[-100%] w-72 h-full bg-white shadow-xl transition-all duration-300 z-50 p-6 flex flex-col">
+
+    <nav class="flex flex-col gap-6 text-gray-700 font-medium mt-8">
+
+      <a href="#hero" class="mobile-link">Home</a>
+      <a href="#library" class="mobile-link">AI Library</a>
+      <a href="#calculators" class="mobile-link">Calculators</a>
+      <a href="#impact" class="mobile-link">Impact</a>
+      <a href="#demo" class="mobile-link">Demo</a>
+
+    </nav>
+
+ <!--   <a href="#demo"
+      class="mt-auto bg-primary text-white text-center py-3 rounded-lg font-semibold">
+      Book a Demo
+    </a> -->
+  </div>
+
+</header>
+
 
 
 
   <!-- ================= HERO ================= -->
   <section id="hero" class="bg-gradient-to-b from-white to-gray-50">
 
-    <div class="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-16 items-start">
+    <div class="max-w-7xl mx-auto px-6 py-6 grid md:grid-cols-2 gap-16 items-start">
 
       <!-- LEFT -->
       <div>
 
-        <h1 class="text-5xl md:text-6xl font-bold leading-tight">
+        <h1 class="text-5xl md:text-6xl  leading-tight">
           Power Insurance AI<br>
           with Pre-Built<br>
           <span class="text-primary">Autonomous Agents</span>
@@ -220,50 +365,63 @@
         <div class="bg-white p-3 rounded-2xl shadow-2xl">
 
           <video class="w-full aspect-video rounded-xl shadow-2xl" controls preload="metadata">
-            <source src="Neutrinos_Intelligent_Automation_Platform_144P.mp4" type="video/mp4">
+            <source src="Neutrinos.mp4" type="video/mp4">
           </video>
 
 
         </div>
 
         <!-- TRUSTED LOGOS -->
-        <div class="mt-12">
+        <div class="mt-6">
 
-          <p class="text-xs text-center tracking-widest text-gray-400 mb-6">
+          <p class="text-xs text-center tracking-widest text-gray-400 mb-2">
             TRUSTED BY INDUSTRY LEADERS
           </p>
 
-          <div class="grid grid-cols-3 gap-8 items-center opacity-90">
+          <div class="grid grid-cols-3 gap-4 items-center opacity-90">
 
-            <!-- CDN / Partner icons using lucide (colored mint) -->
+            <!-- CDN / Partner logos replaced with user images (keeps sizing and labels) -->
             <div class="flex flex-col items-center">
-              <i data-lucide="sun" class="w-10 h-10 text-mint"></i>
-              <p class="text-xs mt-2 text-mint font-semibold">Sun Life</p>
+              <div class="h-12 flex items-center justify-center">
+                <img src="icons/logo-singlife.png" alt="SING LIFE logo" class="max-h-10 object-contain" />
+              </div>
+              <!-- <p class="text-xs mt-2 text-mint font-semibold">SING LIFE</p> -->
             </div>
 
             <div class="flex flex-col items-center">
-              <i data-lucide="shield-check" class="w-10 h-10 text-mint"></i>
-              <p class="text-xs mt-2 text-mint font-semibold">Manulife</p>
+              <div class="h-12 flex items-center justify-center">
+                <img src="icons/logo-deem.png" alt="DEEM logo" class="max-h-10 object-contain" />
+              </div>
+              <!-- <p class="text-xs mt-2 text-mint font-semibold">DEEM</p> -->
             </div>
 
             <div class="flex flex-col items-center">
-              <i data-lucide="clipboard-check" class="w-10 h-10 text-mint"></i>
-              <p class="text-xs mt-2 text-mint font-semibold">Prudential</p>
+              <div class="h-12 flex items-center justify-center">
+                <img src="icons/Prudential-Financial-logo-modified-Neutrinos.png" alt="Prudential logo"
+                  class="max-h-10 object-contain" />
+              </div>
+              <!-- <p class="text-xs mt-2 text-mint font-semibold">PRUDENTIAL</p> -->
             </div>
 
             <div class="flex flex-col items-center">
-              <i data-lucide="bus" class="w-10 h-10 text-mint"></i>
-              <p class="text-xs mt-2 text-mint font-semibold">Al Rajhi</p>
+              <div class="h-12 flex items-center justify-center">
+                <img src="icons/logo-al-rajhi-takaful.png" alt="Al Rajhi logo" class="max-h-10 object-contain" />
+              </div>
+              <!-- <p class="text-xs mt-2 text-mint font-semibold">AL RAJHI</p> -->
             </div>
 
             <div class="flex flex-col items-center">
-              <i data-lucide="users" class="w-10 h-10 text-mint"></i>
-              <p class="text-xs mt-2 text-mint font-semibold">Sanlam</p>
+              <div class="h-12 flex items-center justify-center">
+                <img src="icons/sanlam.png" alt="Sanlam logo" class="max-h-20 object-contain" />
+              </div>
+              <!-- <p class="text-xs mt-2 text-mint font-semibold">ASSUPOL</p> -->
             </div>
 
             <div class="flex flex-col items-center">
-              <i data-lucide="cloud" class="w-10 h-10 text-mint"></i>
-              <p class="text-xs mt-2 text-mint font-semibold">InsurTech</p>
+              <div class="h-12 flex items-center justify-center">
+                <img src="icons/logo-fnb.png" alt="FNB logo" class="max-h-10 object-contain" />
+              </div>
+              <!-- <p class="text-xs mt-2 text-mint font-semibold">FNB</p> -->
             </div>
 
           </div>
@@ -281,85 +439,43 @@
   <!-- ================= AGENT LIBRARY ================= -->
   <section id="library" class="bg-white py-8">
 
-    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-20 items-start">
+    <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-10 items-start">
 
 
       <!-- LEFT CONTENT -->
       <div>
 
         <p class="text-xs tracking-widest text-primary font-semibold mb-4">
-          COMPREHENSIVE COVERAGE
+          Enterprise-Ready AI Agents
         </p>
 
-        <h2 class="text-4xl font-bold leading-tight">
-          A Look Inside the<br>
-          <span class="text-primary">AI Agent Library</span>
+        <h2 class="text-4xl  leading-tight">
+          Purpose-Built for <br>
+          <span class="text-primary">Insurance</span>
         </h2>
 
-        <p class="mt-6 text-gray-600 max-w-lg">
-          Our AI Agent Library spans six broad categories, each with a growing list of specialized
-          agents that is constantly expanding to cover more insurance workflows and use cases.
-          From initial risk assessment to final claims settlement, our agents work autonomously to drive efficiency.
-        </p>
+        <p class=" text-gray-600 delivered " style="font-size: large; text-align: justify;">
+          Delivered
+          through the Neutrinos Platform and AI Hub, the Neutrinos AI Agent Library offers a
+          comprehensive collection of pre-built, insurance-native AI agents that act on your
+          behalf.
+          These agents automate high-impact workflows across claims, underwriting, servicing,
+          and more—integrating seamlessly with existing systems. Centrally governed,
+          explainable, and designed for scale, they help insurers accelerate automation,
+          improve accuracy, and unlock measurable business outcomes without starting from
+          scratch. </p>
 
-        <button class="mt-8 bg-primary text-white px-6 py-3 rounded-lg font-medium shadow-md">
+        <!-- <button class="mt-8 bg-primary text-white px-6 py-3 rounded-lg font-medium shadow-md">
           Explore All Categories →
-        </button>
+        </button> -->
 
       </div>
 
 
 
       <!-- RIGHT GRID -->
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-12 text-center">
-
-
-        <!-- 1 -->
-        <div>
-          <i data-lucide="search" class="mx-auto w-14 h-14 text-primary mb-4"></i>
-          <h4 class="font-semibold text-mint">Underwriting & Risk Assessment</h4>
-          <p class="text-sm text-gray-500 mt-2">Automate risk evaluation and pricing with precision analysis.</p>
-        </div>
-
-
-        <!-- 2 -->
-        <div>
-          <i data-lucide="shield-check" class="mx-auto w-14 h-14 text-primary mb-4"></i>
-          <h4 class="font-semibold text-mint">Fraud Detection & Adjudication</h4>
-          <p class="text-sm text-gray-500 mt-2">Identify anomalies in real-time to prevent fraud.</p>
-        </div>
-
-
-        <!-- 3 -->
-        <div>
-          <i data-lucide="clipboard-check" class="mx-auto w-14 h-14 text-primary mb-4"></i>
-          <h4 class="font-semibold text-mint">Claims Automation</h4>
-          <p class="text-sm text-gray-500 mt-2">End-to-end claims processing with minimal touch.</p>
-        </div>
-
-
-        <!-- 4 -->
-        <div>
-          <i data-lucide="file-text" class="mx-auto w-14 h-14 text-primary mb-4"></i>
-          <h4 class="font-semibold text-mint">Medical & Document Intelligence</h4>
-          <p class="text-sm text-gray-500 mt-2">Extract insights from reports and complex documents.</p>
-        </div>
-
-
-        <!-- 5 -->
-        <div>
-          <i data-lucide="users" class="mx-auto w-14 h-14 text-primary mb-4"></i>
-          <h4 class="font-semibold text-mint">Customer Communication</h4>
-          <p class="text-sm text-gray-500 mt-2">Personalized omni-channel engagement.</p>
-        </div>
-
-
-        <!-- 6 -->
-        <div>
-          <i data-lucide="cloud-check" class="mx-auto w-14 h-14 text-primary mb-4"></i>
-          <h4 class="font-semibold text-mint">Distribution & Compliance</h4>
-          <p class="text-sm text-gray-500 mt-2">Ensure compliance with enterprise controls.</p>
-        </div>
+      <div>
+        <img class="ai-agent mt-24" src="icons/AI.png" alt="AI Agent Library" width="100%" height="100%">
 
 
       </div>
@@ -367,146 +483,6 @@
     </div>
 
   </section>
-
-
-  <!-- ================= IMPACT SECTION ================= -->
-  <section id="impact" class="bg-gray-50 py-8">
-
-    <div class="max-w-7xl mx-auto px-6">
-
-
-      <!-- TOP HEADER -->
-      <div class="grid md:grid-cols-2 gap-10 items-start mb-6">
-
-        <div>
-          <p class="text-xs tracking-widest text-primary font-semibold mb-4">
-            BUSINESS VALUE
-          </p>
-
-          <h2 class="text-4xl font-bold leading-tight">
-            Proven Impact Across the<br>
-            <span class="text-primary">Insurance Value Chain</span>
-          </h2>
-        </div>
-
-        <div class="self-start md:mt-[2.3rem]">
-          <p class="text-gray-600 max-w-md">
-            Deploying Neutrinos AI Agents doesn’t just automate tasks—it transforms
-            operations. See how our library drives efficiency, compliance, and growth.
-          </p>
-        </div>
-
-      </div>
-
-
-
-      <!-- STATS CARDS -->
-      <div class="grid md:grid-cols-4 gap-6 mb-6">
-
-        <div class="bg-white rounded-xl shadow-sm border p-6">
-          <h3 class="text-4xl font-bold text-primary">50%</h3>
-          <p class="font-semibold mt-2">Efficiency Gains</p>
-          <p class="text-sm text-gray-500 mt-1">Reduction in manual processing time</p>
-        </div>
-
-        <div class="bg-white rounded-xl shadow-sm border p-6">
-          <h3 class="text-4xl font-bold text-primary">3x</h3>
-          <p class="font-semibold mt-2">Faster Cycle Times</p>
-          <p class="text-sm text-gray-500 mt-1">Accelerated submission to issuance</p>
-        </div>
-
-        <div class="bg-white rounded-xl shadow-sm border p-6">
-          <h3 class="text-4xl font-bold text-primary">99%</h3>
-          <p class="font-semibold mt-2">Accuracy Rate</p>
-          <p class="text-sm text-gray-500 mt-1">Complex data extraction & entry tasks</p>
-        </div>
-
-        <div class="bg-white rounded-xl shadow-sm border p-6">
-          <h3 class="text-4xl font-bold text-primary">100%</h3>
-          <p class="font-semibold mt-2">Compliance</p>
-          <p class="text-sm text-gray-500 mt-1">Full audit trails for every action</p>
-        </div>
-
-      </div>
-
-
-
-      <!-- FEATURE CARDS -->
-      <div class="grid md:grid-cols-3 gap-8">
-
-
-        <!-- CARD 1 -->
-        <div class="bg-white rounded-2xl shadow-md p-4">
-
-          <i data-lucide="trending-up" class="w-10 h-10 text-primary mb-4"></i>
-
-          <h4 class="font-semibold text-lg mb-2">Predictive Analytics</h4>
-
-          <p class="text-gray-600 mb-4 text-sm">
-            Harness real-time data to anticipate risks and opportunities before they happen.
-          </p>
-
-          <ul class="space-y-2 text-sm text-gray-600">
-            <li>✔ Dynamic pricing models</li>
-            <li>✔ Real-time fraud detection</li>
-            <li>✔ Churn prediction & retention</li>
-          </ul>
-
-        </div>
-
-
-
-        <!-- CARD 2 -->
-        <div class="bg-white rounded-2xl shadow-md p-8">
-
-          <i data-lucide="scale" class="w-10 h-10 text-primary mb-4"></i>
-
-          <h4 class="font-semibold text-lg mb-2">Scale & Governance</h4>
-
-          <p class="text-gray-600 mb-4 text-sm">
-            Expand automation securely across the enterprise with strong governance.
-          </p>
-
-          <ul class="space-y-2 text-sm text-gray-600">
-            <li>✔ Enterprise-grade security</li>
-            <li>✔ Centralized agent management</li>
-            <li>✔ SOC2 & GDPR compliance</li>
-          </ul>
-
-        </div>
-
-
-
-        <!-- CARD 3 -->
-        <div class="bg-white rounded-2xl shadow-md p-8">
-
-          <i data-lucide="pencil-ruler" class="w-10 h-10 text-primary mb-4"></i>
-
-          <h4 class="font-semibold text-lg mb-2">Discover & Design</h4>
-
-          <p class="text-gray-600 mb-4 text-sm">
-            Tailor AI agents to your workflows with low-code tools and rapid iteration.
-          </p>
-
-          <ul class="space-y-2 text-sm text-gray-600">
-            <li>✔ Business-specific templates</li>
-            <li>✔ Rapid prototyping</li>
-            <li>✔ Custom integrations</li>
-          </ul>
-
-        </div>
-
-
-      </div>
-
-
-    </div>
-
-  </section>
-
-
-
-
 
 
   <!--Calculator-->
@@ -528,19 +504,23 @@
         <!-- TABS -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
 
-          <button class="tab-btn border rounded-lg py-4 bg-gray-50 whitespace-normal break-words text-sm px-3" data-type="nigo">
+          <button class="tab-btn border rounded-lg py-4 bg-gray-50 whitespace-normal break-words text-sm px-3"
+            data-type="nigo">
             Claims NIGO Handler
           </button>
 
-          <button class="tab-btn border rounded-lg py-4 bg-gray-50 whitespace-normal break-words text-sm px-3" data-type="eligibility">
+          <button class="tab-btn border rounded-lg py-4 bg-gray-50 whitespace-normal break-words text-sm px-3"
+            data-type="eligibility">
             Claims Eligibility Agent
           </button>
 
-          <button class="tab-btn border rounded-lg py-4 bg-gray-50 whitespace-normal break-words text-sm px-3" data-type="policy">
+          <button class="tab-btn border rounded-lg py-4 bg-gray-50 whitespace-normal break-words text-sm px-3"
+            data-type="policy">
             Policy Recommendation Agent
           </button>
 
-          <button class="tab-btn border rounded-lg py-4 bg-gray-50 whitespace-normal break-words text-sm px-3" data-type="email">
+          <button class="tab-btn border rounded-lg py-4 bg-gray-50 whitespace-normal break-words text-sm px-3"
+            data-type="email">
             Email Automation Agent
           </button>
 
@@ -600,7 +580,7 @@
               </div>
 
               <div id="result-box-primary" class="text-white rounded-xl py-8 text-center">
-                <div id="result" class="text-3xl font-bold result-value"></div>
+                <div id="result" class="text-3xl  result-value"></div>
                 <p id="result-primary-label" class="text-sm opacity-90 mt-2">Primary Estimated Impact</p>
               </div>
 
@@ -624,19 +604,163 @@
 
   </section>
 
-
   <!--Calculator end-->
 
+
+
+  <!-- ================= IMPACT SECTION ================= -->
+  <section id="impact" class="bg-gray-50 py-8">
+
+    <div class="max-w-7xl mx-auto px-6">
+
+
+      <!-- TOP HEADER -->
+      <div class="grid md:grid-cols-2 gap-10 items-start mb-6">
+
+        <div>
+          <p class="text-xs tracking-widest text-primary font-semibold mb-4">
+            BUSINESS VALUE
+          </p>
+
+          <h2 class="text-4xl  leading-tight">
+            Proven Impact Across the<br>
+            <span class="text-primary">Insurance Value Chain</span>
+          </h2>
+        </div>
+
+        <div class="self-start md:mt-[2.3rem]">
+          <p class="text-gray-600 max-w-md">
+            Deploying Neutrinos AI Agents doesn’t just automate tasks—it transforms
+            operations. See how our library drives efficiency, compliance, and growth.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- FEATURE CARDS -->
+      <div class="grid md:grid-cols-3 gap-8  mb-6">
+
+
+        <!-- CARD 1 -->
+
+        <div class="bg-white rounded-2xl shadow-md p-8">
+
+          <i data-lucide="scale" class="w-10 h-10 text-primary mb-4"></i>
+
+          <h4 class="font-semibold text-lg mb-2">Discover &amp; Design</h4>
+
+          <p class="text-gray-600 mb-4 text-sm">
+            Configure agents mapped to business-specific use
+            cases </p>
+
+
+
+          <!-- <ul class="space-y-2 text-sm text-gray-600">
+            <li>✔ Business-specific templates</li>
+            <li>✔ Rapid prototyping</li>
+            <li>✔ Custom integrations</li>
+          </ul> -->
+
+        </div>
+
+
+
+
+        <!-- CARD 2 -->
+
+        <div class="bg-white rounded-2xl shadow-md p-8">
+
+          <i data-lucide="trending-up" class="w-10 h-10 text-primary mb-4"></i>
+
+          <h4 class="font-semibold text-lg mb-2">Predictive Intelligence</h4>
+
+          <p class="text-gray-600 mb-4 text-sm">
+            Real-time insights for pricing, risk, and
+            decisions
+          </p>
+
+          <!-- <ul class="space-y-2 text-sm text-gray-600">
+            <li>✔ Dynamic pricing models</li>
+            <li>✔ Real-time fraud detection</li>
+            <li>✔ Churn prediction & retention</li>
+          </ul> -->
+
+        </div>
+
+
+
+        <!-- CARD 3 -->
+        <div class="bg-white rounded-2xl shadow-md p-8">
+
+          <i data-lucide="pencil-ruler" class="w-10 h-10 text-primary mb-4"></i>
+
+          <h4 class="font-semibold text-lg mb-2">Scale &amp; Governance</h4>
+
+          <p class="text-gray-600 mb-4 text-sm">
+            Enterprise controls, auditability, and
+            compliance </p>
+
+          <!-- <ul class="space-y-2 text-sm text-gray-600">
+            <li>✔ Enterprise-grade security</li>
+            <li>✔ Centralized agent management</li>
+            <li>✔ SOC2 & GDPR compliance</li>
+          </ul> -->
+
+
+
+        </div>
+
+
+      </div>
+
+
+
+
+
+      <!-- STATS CARDS -->
+      <div class="grid md:grid-cols-3 gap-6">
+
+        <div class="bg-white rounded-xl shadow-sm border p-6">
+          <h3 class="text-4xl  text-primary">30-50%</h3>
+          <p class="font-semibold mt-2">Efficiency Gains</p>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border p-6">
+          <h3 class="text-4xl  text-primary">90%</h3>
+          <p class="font-semibold mt-2">reduction in manual work</p>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border p-6">
+          <h3 class="text-4xl  text-primary">99%</h3>
+          <p class="font-semibold mt-2">accuracy in classification and validation</p>
+        </div>
+
+
+
+      </div>
+
+
+
+
+
+
+    </div>
+
+  </section>
+
+
+
+
   <!-- ================= DEMO / CTA SECTION ================= -->
-  <section id="demo" class="bg-white py-10">
+  <section id="demo" class="bg-white ">
 
     <div class="max-w-7xl mx-auto grid md:grid-cols-2">
 
 
       <!-- LEFT SIDE -->
-      <div class="px-8 py-16 flex flex-col justify-center">
+      <div class="px-8 py-6 flex flex-col justify-center">
 
-        <h2 class="text-5xl font-bold leading-tight">
+        <h2 class="text-5xl  leading-tight">
           Ready to <span class="text-primary">Transform?</span><br>
           Book Your Demo
         </h2>
@@ -681,7 +805,7 @@
         <div class="mt-10 text-sm text-gray-500">
           Not ready to commit? Start here:
           <br>
-          <a href="#" class="text-primary font-semibold">
+          <a href="https://www.neutrinos.com/uploads/files/Neutrinos-AI-Agent-Library_Brochure.pdf" target = "_blank" class="text-primary font-semibold">
             Download the AI Agent Library Brochure →
           </a>
         </div>
@@ -729,6 +853,29 @@
       target: "#hubspotForm"
     });
   </script>
+
+  <script>
+  const btn = document.getElementById('menuBtn');
+  const menu = document.getElementById('mobileMenu');
+  const overlay = document.getElementById('overlay');
+
+  function closeMenu() {
+    menu.classList.remove('menu-open');
+    overlay.classList.remove('overlay-open');
+  }
+
+  btn.addEventListener('click', () => {
+    menu.classList.add('menu-open');
+    overlay.classList.add('overlay-open');
+  });
+
+  overlay.addEventListener('click', closeMenu);
+
+  document.querySelectorAll('.mobile-link').forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+</script>
+
 </body>
 
 </html>

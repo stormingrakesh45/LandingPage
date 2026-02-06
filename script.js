@@ -381,11 +381,12 @@ function switchTab(type) {
   // For others use the default: secondary, primary, tertiary.
   if (resultsGrid) {
     if (type === "email") {
-      // Desired order for email: secondary, primary, flagged, tertiary
+      // For email: show per-month metric second and per-agent metric last
+      // Desired order for email: secondary (emails/month), tertiary (total hrs/month), flagged, primary (hrs/agent)
       if (resultBoxSecondary) resultsGrid.appendChild(resultBoxSecondary);
-      if (resultBoxPrimary) resultsGrid.appendChild(resultBoxPrimary);
-      if (resultBoxFlagged) resultsGrid.appendChild(resultBoxFlagged);
       if (resultBoxTertiary) resultsGrid.appendChild(resultBoxTertiary);
+      if (resultBoxFlagged) resultsGrid.appendChild(resultBoxFlagged);
+      if (resultBoxPrimary) resultsGrid.appendChild(resultBoxPrimary);
     } else {
       if (resultBoxSecondary) resultsGrid.appendChild(resultBoxSecondary);
       if (resultBoxPrimary) resultsGrid.appendChild(resultBoxPrimary);
