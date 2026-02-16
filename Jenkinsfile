@@ -5,7 +5,7 @@ pipeline {
 
         stage('Clone Repo') {
             steps {
-                git branch: 'main',
+                git branch: 'playground',
                 url: 'https://github.com/stormingrakesh45/LandingPage.git'
             }
         }
