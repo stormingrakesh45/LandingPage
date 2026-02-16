@@ -16,7 +16,7 @@ CONFIG (labels + formulas)
 const config = {
   nigo: {
     title: "Claims NIGO Handler",
-    theme: "blue",
+    theme: "grey",
     labels: ["Claims / Month", "Resubmission %"],
     primaryLabel: "Rework hours saved",
     calc: (v1, v2) => {
@@ -60,7 +60,7 @@ const config = {
   },
 
   policy: {
-    title: "Policy Recommendation Agent",
+    title: "Product Recommendation Agent",
     theme: "yellow",
     labels: ["Inquiries / Month", "Time per Inquiry (min)"],
     primaryLabel: "Agent hours freed / month",
@@ -79,18 +79,18 @@ const config = {
   },
 
   email: {
-    title: "Email Automation Agent",
+    title: "Email Triage and Automation agent",
     theme: "purple",
     labels: ["Emails / Day", "Team Size", "Manual Time (min)"],
-    primaryLabel: "Hours saved per agent",
+    primaryLabel: "Hours saved / Customer service agent",
     calc: (v1, v2, v3) => {
       const monthly = v1 * 22;
       const saved = (monthly * v3 - monthly * 0.17) / 60;
       return saved / v2;
     },
-    unit: " hrs/agent",
+    unit: " hrs saved",
     secondary: {
-      label: "Emails auto-classified / month",
+      label: "Emails actioned / month",
       calc: (v1, v2, v3) => {
         const monthly = v1 * 22;
         return monthly * 0.99;
@@ -98,12 +98,12 @@ const config = {
       unit: " emails",
     },
     flagged: {
-      label: "Flagged for Priority/Fraud Review",
+      label: "Flagged for prioritization / special handling",
       calc: (v1) => {
         const monthly = v1 * 22;
         return monthly * 0.15;
       },
-      unit: " cases",
+      unit: " emails",
     },
     tertiary: {
       label: "Total hours saved / month",
@@ -156,7 +156,7 @@ const colorMap = {
   purple: "bg-iris",
   green: "bg-mint",
   yellow: "bg-celeste",
-  blue: "bg-primary",
+  grey: "bg-grey",
 };
 
 // map theme keys to the CSS variables defined in the page so we can
@@ -165,7 +165,7 @@ const themeVarMap = {
   purple: "--iris",
   green: "--mint",
   yellow: "--celeste",
-  blue: "--primary",
+  grey: "--grey",
 };
 
 // color each tab button to match its calculator theme (uses CSS vars)
